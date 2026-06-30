@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * 디자인 시스템 토큰 — SPEC 6장.
+ * 정확한 HEX는 디자인에서 추출 예정(아래는 화면 기준 근사치).
+ * TODO(asset): 최종 디자인 확정 시 아래 HEX 값을 디자인 토큰과 동기화.
+ */
+:root {
+  --color-primary: #6c5ce7; /* 메인 보라 (버튼/액티브 스텝/배지) */
+  --color-primary-weak: #efebff; /* 선택 카드 배경 틴트 */
+  --color-primary-strong: #2e1a6b; /* 로그인 그라데이션 딥 인디고 */
+  --color-bg: #f4f4f5; /* 빌더/대시보드 배경 */
+  --color-surface: #ffffff; /* 카드/패널 */
+  --color-border: #e5e5e8;
+  --color-text: #1a1a1a;
+  --color-text-sub: #8a8a8e; /* placeholder/보조 */
+
+  --status-progress: #2bbe6b; /* 진행중 (초록) */
+  --status-done: #6c5ce7; /* 완료 (보라) */
+  --status-draft: #9aa0a6; /* 초안 (회색) */
+
+  --radius-card: 16px;
+  --radius-input: 12px;
+  --radius-pill: 9999px; /* 다음/생성하기 버튼 */
+
+  --font-sans: "Pretendard", system-ui, sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-bg text-text;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+}
