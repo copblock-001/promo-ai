@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { DashboardView } from "@/components/app/DashboardView";
+import { ArchiveView } from "@/components/app/ArchiveView";
 import type { ShellProfile } from "@/components/app/AppShell";
 
-/** SCR-02 · 대시보드 (모든 프로모션) */
-export default async function DashboardPage() {
+/** SCR-08 · 아카이브 */
+export default async function ArchivePage() {
   const supabase = await createServerSupabase();
   const {
     data: { user },
@@ -22,5 +22,5 @@ export default async function DashboardPage() {
     role: profile?.role === "admin" ? "admin" : "member",
   };
 
-  return <DashboardView profile={shellProfile} />;
+  return <ArchiveView profile={shellProfile} />;
 }

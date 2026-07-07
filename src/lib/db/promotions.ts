@@ -33,10 +33,14 @@ export async function fetchPromotions(
 
   const term = search?.trim();
   if (term) {
-    const like = `%${term}%`;
-    query = query.or(
-      `name.ilike.${like},brand_name.ilike.${like},manager_name.ilike.${like}`,
-    );
+    // PostgREST or() 필터를 깨뜨리는 문자 제거(콤마/괄호/역슬래시)
+    const safe = term.replace(/[,()\\]/g, " ").trim();
+    if (safe) {
+      const like = `%${safe}%`;
+      query = query.or(
+        `name.ilike.${like},brand_name.ilike.${like},manager_name.ilike.${like}`,
+      );
+    }
   }
 
   if (sort === "name") {
