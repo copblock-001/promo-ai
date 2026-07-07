@@ -1,5 +1,5 @@
-import { StepPlaceholder } from "@/components/builder/StepPlaceholder";
+import { Step5Content } from "@/components/builder/Step5Content";
 
 export default function BuilderStep5() {
-  return <StepPlaceholder step={5} />;
+  return <Step5Content />;
 }
