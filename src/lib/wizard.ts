@@ -1,12 +1,9 @@
 import type { WizardData } from "@/store/wizard";
+import { hasMinimum } from "@/lib/layout";
 
 export const STEP_COUNT = 5;
 
-/**
- * 각 단계에서 [다음] 활성 조건(SPEC 공통 규칙).
- * Step2·3·4의 실제 폼/검증은 이후 마일스톤(6·8)에서 채워지므로,
- * 폼이 아직 없는 단계는 임시로 통과시킨다.
- */
+/** 각 단계에서 [다음] 활성 조건 (SPEC 공통 규칙). */
 export function canProceedFrom(step: number, d: WizardData): boolean {
   switch (step) {
     case 1:
@@ -14,14 +11,11 @@ export function canProceedFrom(step: number, d: WizardData): boolean {
         d.name.trim() && d.brand_name.trim() && d.manager_name.trim(),
       );
     case 2:
-      // TODO(m6): 목적 선택 폼 연결 시 → d.purpose_main && d.purpose_detail
-      return true;
+      return d.purpose_main !== null && d.purpose_detail !== null;
     case 3:
-      // TODO(m6): 프로토타입 선택 폼 연결 시 → d.prototype_type
-      return true;
+      return d.prototype_type !== null;
     case 4:
-      // TODO(m8): 최소 구성(GNB+KV) 검사
-      return true;
+      return hasMinimum(d.layout); // 최소 구성(GNB + KV)
     default:
       return true;
   }

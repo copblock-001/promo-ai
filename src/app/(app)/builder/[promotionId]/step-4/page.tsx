@@ -1,5 +1,5 @@
-import { StepPlaceholder } from "@/components/builder/StepPlaceholder";
+import { Step4Editor } from "@/components/builder/Step4Editor";
 
 export default function BuilderStep4() {
-  return <StepPlaceholder step={4} />;
+  return <Step4Editor />;
 }
