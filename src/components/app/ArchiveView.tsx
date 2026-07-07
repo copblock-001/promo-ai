@@ -47,7 +47,7 @@ export function ArchiveView({ profile }: { profile: ShellProfile }) {
               key={p.id}
               promotion={p}
               mode="archived"
-              onOpen={() => router.push(`/builder/${p.id}/step-1`)}
+              onOpen={() => router.push(`/builder/${p.id}`)}
               onRestore={() =>
                 restoreMut.mutate({ id: p.id, archived: false })
               }

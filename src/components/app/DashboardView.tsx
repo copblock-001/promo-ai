@@ -35,7 +35,7 @@ export function DashboardView({ profile }: { profile: ShellProfile }) {
   const deleteMut = useDeletePromotion();
 
   function openBuilder(id: string) {
-    router.push(`/builder/${id}/step-1`);
+    router.push(`/builder/${id}`);
   }
 
   async function handleCreate() {
@@ -44,7 +44,8 @@ export function DashboardView({ profile }: { profile: ShellProfile }) {
       brand_name: "",
       manager_name: "",
     });
-    openBuilder(created.id);
+    // 새 프로모션은 Step1부터
+    router.push(`/builder/${created.id}/step-1`);
   }
 
   const topbarActions = (

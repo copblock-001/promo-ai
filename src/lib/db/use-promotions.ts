@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { createClient } from "@/lib/supabase/client";
+import { getBrowserSupabase } from "@/lib/supabase/client";
 import type { NewPromotionInput, PromotionUpdate } from "@/types/promotion";
 import {
   createPromotion,
@@ -18,11 +18,7 @@ import {
   type ListPromotionsOptions,
 } from "./promotions";
 
-/** 브라우저 Supabase 클라이언트 싱글턴 (GoTrue 중복 인스턴스 방지) */
-let browserClient: ReturnType<typeof createClient> | null = null;
-function sb() {
-  return (browserClient ??= createClient());
-}
+const sb = getBrowserSupabase;
 
 export const promotionKeys = {
   all: ["promotions"] as const,
