@@ -13,10 +13,18 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-16">
       <header className="flex flex-col gap-3">
-        {/* TODO(asset): Promo.ai 로고 에셋으로 교체 */}
-        <div className="flex items-center gap-2 text-2xl font-bold text-primary">
-          <Sparkles className="h-6 w-6" />
-          Promo.ai
+        <div className="flex items-center justify-between">
+          {/* TODO(asset): Promo.ai 로고 에셋으로 교체 */}
+          <div className="flex items-center gap-2 text-2xl font-bold text-primary">
+            <Sparkles className="h-6 w-6" />
+            Promo.ai
+          </div>
+          <Link
+            href="/login"
+            className="rounded-pill bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
+          >
+            로그인
+          </Link>
         </div>
         <h1 className="text-3xl font-bold">
           아이디어부터 완성까지,
@@ -64,9 +72,9 @@ export default function Home() {
       </section>
 
       <footer className="text-sm text-text-sub">
-        다음 마일스톤:{" "}
-        <Link href="/" className="text-primary underline">
-          인증(SCR-01)
+        인증 화면 바로가기:{" "}
+        <Link href="/login" className="text-primary underline">
+          로그인 / 회원가입 (SCR-01)
         </Link>
       </footer>
     </main>
