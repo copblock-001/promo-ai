@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWizard } from "@/store/wizard";
 import { findSection, updateContent } from "@/lib/layout";
@@ -12,8 +12,11 @@ import { SectionFields } from "./SectionFields";
 /** SCR-07 · Step5 콘텐츠 입력 (좌측 동적 필드 ↔ 우측 실시간 프리뷰, 양방향) */
 export function Step5Content() {
   const layout = useWizard((s) => s.layout);
+  const promotionId = useWizard((s) => s.id);
   const patch = useWizard((s) => s.patch);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   // 기본 선택: 첫 섹션
   useEffect(() => {
@@ -30,6 +33,27 @@ export function Step5Content() {
     patch({ layout: updateContent(layout, selected.id, content) });
   }
 
+  async function handleAiFill() {
+    if (!selected || !promotionId) return;
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const res = await fetch("/api/ai/fill", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ promotionId, sectionId: selected.id }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? "AI 생성에 실패했습니다.");
+      const content = selected.content as Record<string, unknown>;
+      onFieldChange({ ...content, ...(data.copy ?? {}) });
+    } catch (e) {
+      setAiError(e instanceof Error ? e.message : "AI 생성에 실패했습니다.");
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
   return (
     <div className="grid h-[calc(100vh-61px)] grid-cols-1 lg:grid-cols-[380px_1fr]">
       {/* 좌측 입력 패널 */}
@@ -43,13 +67,16 @@ export function Step5Content() {
           </div>
           <button
             type="button"
-            onClick={() =>
-              // TODO(m10): /api/ai/fill 연동
-              window.alert("AI로 채우기는 마일스톤 10에서 제공됩니다.")
-            }
-            className="flex shrink-0 items-center gap-1 rounded-pill bg-primary-weak px-3 py-1.5 text-sm font-medium text-primary"
+            onClick={handleAiFill}
+            disabled={aiLoading || !selected}
+            className="flex shrink-0 items-center gap-1 rounded-pill bg-primary-weak px-3 py-1.5 text-sm font-medium text-primary disabled:opacity-50"
           >
-            <Sparkles className="h-4 w-4" /> AI로 채우기
+            {aiLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            {aiLoading ? "생성 중..." : "AI로 채우기"}
           </button>
         </div>
 
@@ -62,6 +89,11 @@ export function Step5Content() {
                 </span>
                 <span className="text-sm text-text-sub">{def.label}</span>
               </div>
+              {aiError && (
+                <p className="mb-4 rounded-input bg-red-50 px-3 py-2 text-sm text-red-600">
+                  {aiError}
+                </p>
+              )}
               <SectionFields section={selected} onChange={onFieldChange} />
             </>
           ) : (
