@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
+import type { PromotionStatus } from "@/types/promotion";
 
-/** 프로모션 상태 (SPEC 5장 enum) */
-export type PromotionStatus = "draft" | "in_progress" | "done";
+export type { PromotionStatus };
 
 const STATUS_CONFIG: Record<
   PromotionStatus,

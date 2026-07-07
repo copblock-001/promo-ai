@@ -38,16 +38,17 @@ cp .env.example .env.local
       - Project Settings → API 에서 URL과 두 키 확인
       - _(필요 마일스톤: 인증 / 데이터 계층부터. 부트스트랩만 확인할 때는 생략 가능하나, 입력해두면 좋습니다.)_
 
-- [ ] **2. DB 마이그레이션 적용**
-      - **인증(마일스톤 2):** `supabase/migrations/0001_profiles.sql` 실행 → `profiles` 테이블 + `user_role` enum + RLS 생성. **인증이 동작하려면 필수입니다.**
-      - **데이터 계층(마일스톤 3):** `promotions` 테이블/enum은 이후 마일스톤에서 추가됩니다.
-      - 적용: Supabase Dashboard → SQL Editor 에 붙여넣어 실행, 또는 Supabase CLI (`supabase db push`).
+- [ ] **2. DB 마이그레이션 적용** (Supabase Dashboard → SQL Editor 에 붙여넣어 실행, 또는 CLI `supabase db push`)
+      - **인증(마일스톤 2):** `supabase/migrations/0001_profiles.sql` → `profiles` + `user_role` enum + RLS
+      - **데이터 계층(마일스톤 3):** `supabase/migrations/0002_promotions.sql` → `promotions` 테이블 + enum(purpose/prototype/status) + RLS + updated_at 트리거
+      - 순서대로(0001 → 0002 → 0003) 실행하세요. **각 파일은 한 번씩만** 실행하면 됩니다.
 
 - [ ] **3. `AUTH_PIN_PEPPER` 설정** → 긴 랜덤 문자열을 `.env.local`에 입력 (`openssl rand -base64 48`)
       - _(필요 마일스톤: 인증)_ · ⚠️ 운영 중 값을 변경하면 기존 사용자 로그인이 불가능해집니다.
 
 - [ ] **4. Storage 버킷 생성**: `assets`, `thumbnails`, `exports` (정책 포함)
-      - "데이터 계층" 마일스톤에서 정책 SQL과 함께 안내됩니다.
+      - **`supabase/migrations/0003_storage.sql` 실행**이면 버킷+정책이 자동 생성됩니다.
+      - (또는 Dashboard → Storage 에서 수동 생성 후 0003의 정책 SQL만 실행해도 됩니다.)
 
 - [ ] ~~**Google OAuth 설정**~~ — **불필요**. 로그인 방식이 아이디+4자리 PIN으로 변경되어 Google/이메일 인증을 사용하지 않습니다. (합성 이메일은 서버가 자동 확인 처리)
 

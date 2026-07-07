@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Promo.ai — 프로모션을 만드는 가장 쉬운 방법",
@@ -18,7 +19,9 @@ export default function RootLayout({
         TODO(asset): Pretendard 웹폰트(로컬 또는 CDN) 추가.
         현재는 system-ui 폴백 사용.
       */}
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
