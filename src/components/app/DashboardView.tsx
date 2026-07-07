@@ -53,10 +53,7 @@ export function DashboardView({ profile }: { profile: ShellProfile }) {
       {profile.role === "admin" && (
         <Button
           variant="outline"
-          onClick={() =>
-            // TODO(admin): DB Debug 도구는 마감 마일스톤에서 구현
-            window.alert("DB Debug는 마감 마일스톤에서 제공됩니다.")
-          }
+          onClick={() => router.push("/db-debug")}
           className="hidden sm:inline-flex"
         >
           <Database className="h-4 w-4" />

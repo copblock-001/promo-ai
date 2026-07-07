@@ -2,7 +2,13 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 /** 로그인이 필요한 보호 경로 (app) 그룹 */
-const PROTECTED_PREFIXES = ["/dashboard", "/archive", "/builder"];
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/archive",
+  "/builder",
+  "/result",
+  "/db-debug",
+];
 
 function isProtected(pathname: string): boolean {
   return PROTECTED_PREFIXES.some(

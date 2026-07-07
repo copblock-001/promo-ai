@@ -65,7 +65,12 @@ export function WizardShell({
 
   const navigate = useCallback(
     async (target: number) => {
-      useWizard.getState().setCurrentStep(target);
+      const store = useWizard.getState();
+      store.setCurrentStep(target);
+      // draft → in_progress (Step1 이후 작업 시작)
+      if (target > 1 && store.status === "draft") {
+        store.patch({ status: "in_progress" });
+      }
       await saveNow();
       router.push(stepPath(promotion.id, target));
     },
@@ -84,9 +89,10 @@ export function WizardShell({
     if (step < STEP_COUNT && canProceed) void navigate(step + 1);
   }
 
-  function onGenerate() {
-    // TODO(m11): 결과물 산출(PNG/HTML export) 파이프라인 연결
-    window.alert("생성하기는 마일스톤 11에서 구현됩니다.");
+  async function onGenerate() {
+    // 최종 저장 후 결과물 페이지로 이동(캡처·export는 결과 페이지에서 수행)
+    await saveNow();
+    router.push(`/result/${promotion.id}`);
   }
 
   return (
